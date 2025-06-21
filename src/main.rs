@@ -1,4 +1,5 @@
 mod migrations;
+mod tailwindcss;
 
 use askama::Template;
 use cot::cli::CliMetadata;
@@ -9,7 +10,7 @@ use cot::project::{MiddlewareContext, RegisterAppsContext, RootHandlerBuilder};
 use cot::router::{Route, Router};
 use cot::static_files::{StaticFile, StaticFilesMiddleware};
 use cot::{App, AppBuilder, BoxedHandler, Project, static_files};
-
+use tailwindcss::TailwindMiddleware;
 
 
 #[derive(Debug, Template)]
@@ -39,7 +40,7 @@ impl App for CotTailwindcssApp {
     }
 
     fn static_files(&self) -> Vec<StaticFile> {
-        static_files!("gen/main.css")
+        static_files!("static/gen/main.css")
     }
 }
 
@@ -60,6 +61,7 @@ impl Project for CotTailwindcssProject {
         context: &MiddlewareContext,
     ) -> BoxedHandler {
         handler
+            .middleware(TailwindMiddleware::new())
             .middleware(StaticFilesMiddleware::from_context(context))
             .middleware(AuthMiddleware::new())
             .middleware(SessionMiddleware::new())
