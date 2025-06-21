@@ -1,0 +1,17 @@
+secret_key = "6d78a8d5270abd0472a9dfa1d721f7a3d2b5a3b238e8f25e119d410774998556"
+
+[database]
+url = "sqlite://db.sqlite3?mode=rwc"
+
+[auth_backend]
+type = "database"
+
+[middlewares]
+live_reload.enabled = true
+
+[static_files]
+rewrite = "query_param"
+cache_timeout = "1year"
+
+[middlewares.session]
+secure = false
